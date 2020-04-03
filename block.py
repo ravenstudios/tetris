@@ -2,13 +2,13 @@ import pygame
 from constants import *
 
 class Block:
-    def __init__(self, r, c, color):
+    def __init__(self, pos, color):
         self.width = BLOCK_SIZE
         self.height = BLOCK_SIZE
-        self.r = r
-        self.c = c
-        self.x = r * BLOCK_SIZE + PLAYFIELD_OFFSET
-        self.y = c  * BLOCK_SIZE
+        self.r = pos[0]
+        self.c = pos[1]
+        self.x = self.r * BLOCK_SIZE + PLAYFIELD_OFFSET
+        self.y = self.c  * BLOCK_SIZE
         self.color = color
 
 
