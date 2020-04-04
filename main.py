@@ -20,7 +20,6 @@ def main():
                 if event.key == pygame.K_RIGHT :
                     shape.move_right()
                 if event.key == pygame.K_DOWN :
-                    print("down")
                     shape.drop()
                 if event.key == pygame.K_r :
                     shape.rotate()

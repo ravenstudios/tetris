@@ -22,7 +22,7 @@ class Block:
         self.y = self.c  * BLOCK_SIZE
 
         pygame.draw.rect(surface, BLACK, (self.x, self.y, self.width, self.height))
-        pygame.draw.rect(surface, self.color, (self.x + 4, self.y + 4, self.width - 8, self.height - 8))
+        pygame.draw.rect(surface, self.color, (self.x + 2, self.y + 2, self.width - 4, self.height - 4))
 
 
 
