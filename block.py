@@ -26,10 +26,13 @@ class Block:
 
 
 
-    def move(self, r, c):
-        self.r += r
-        self.c += c
+    def move(self, pos):
+        self.r += pos[0]
+        self.c += pos[1]
 
+    def set_pos(self, pos):
+        self.r = pos[0]
+        self.c = pos[1]
 
     def get_pos(self):
         return {"r":slef.r, "c":self.c, "width":self.width, "height": self.height}

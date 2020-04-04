@@ -13,11 +13,24 @@ def main():
     while running:
         clock.tick(TICK_RATE)
         for event in pygame.event.get():
-            if event.type == pygame.KEYUP :
+
+            if event.type == pygame.KEYDOWN :
                 if event.key == pygame.K_LEFT :
                     shape_t.move_left()
                 if event.key == pygame.K_RIGHT :
                     shape_t.move_right()
+                if event.key == pygame.K_DOWN :
+                    print("down")
+                    shape_t.drop()
+                if event.key == pygame.K_r :
+                    shape_t.rotate()
+                if event.key == pygame.K_q :
+                    running = False
+
+
+
+
+
             if event.type == pygame.QUIT:
                 running = False
         draw()
