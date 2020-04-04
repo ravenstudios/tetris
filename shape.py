@@ -3,7 +3,7 @@ import block
 from constants import *
 
 class Shape:
-    def __init__(self, x, y):
+    def __init__(self, x, y, rots):
 
         self.x = x
         self.y = y
@@ -14,6 +14,16 @@ class Shape:
         self.drop_rate = 60
         self.rate_counter = 0
         self.rot_idx = 0
+
+        self.rotations = rots
+
+        b1 = block.Block((self.rotations[0][0][0] + self.x, self.rotations[0][0][1] + self.y), BLUE)
+        b2 = block.Block((self.rotations[0][1][0] + self.x, self.rotations[0][1][1] + self.y), BLUE)
+        b3 = block.Block((self.rotations[0][2][0] + self.x, self.rotations[0][2][1] + self.y), BLUE)
+        b4 = block.Block((self.rotations[0][3][0] + self.x, self.rotations[0][3][1] + self.y), BLUE)
+        self.width = self.rotations[0][4][0]
+        self.height = self.rotations[0][4][1]
+        self.blocks = [b1, b2, b3, b4]
 
     def move_down(self):
         self.rate_counter += 1

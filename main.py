@@ -1,12 +1,12 @@
 from constants import *
 import pygame
 
-import shape_t
+import shape
 clock = pygame.time.Clock()
 surface = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 
 pygame.init()
-shape_t = shape_t.Shape_T(5, 0)
+shape = shape.Shape(5, 0, T_SHAPE)
 def main():
     running = True
 
@@ -16,14 +16,14 @@ def main():
 
             if event.type == pygame.KEYDOWN :
                 if event.key == pygame.K_LEFT :
-                    shape_t.move_left()
+                    shape.move_left()
                 if event.key == pygame.K_RIGHT :
-                    shape_t.move_right()
+                    shape.move_right()
                 if event.key == pygame.K_DOWN :
                     print("down")
-                    shape_t.drop()
+                    shape.drop()
                 if event.key == pygame.K_r :
-                    shape_t.rotate()
+                    shape.rotate()
                 if event.key == pygame.K_q :
                     running = False
 
@@ -48,13 +48,13 @@ def draw_grid():
 def draw():
     surface.fill((200, 200, 200))#background
     draw_grid()
-    shape_t.draw(surface)
+    shape.draw(surface)
     pygame.display.flip()
 
 
 
 def update():
-    shape_t.update()
+    shape.update()
 
 
 
