@@ -34,7 +34,6 @@ class Shape:
                 for b in self.blocks:
                     b.move((0, 1))
 
-
     def move_left(self):
         bttl = self.blocks_to_left(self.rotations[self.rot_idx])
 
@@ -43,15 +42,12 @@ class Shape:
             for b in self.blocks:
                 b.move((-1, 0))
 
-
-
     def move_right(self):
         bttr = self.blocks_to_right(self.rotations[self.rot_idx])
         if self.x + bttr + 1< PLAYFIELD_COLS:#the + 1 accounts for the width of the block
             self.x += 1
             for b in self.blocks:
                 b.move((1, 0))
-
 
     def rotate(self):
 
@@ -60,6 +56,14 @@ class Shape:
 
         self.rot_idx = self.rot_idx % len(self.rotations)
 
+        bttl = self.blocks_to_left(self.rotations[self.rot_idx])
+        bttr = self.blocks_to_right(self.rotations[self.rot_idx])
+
+        if self.x - bttl < 0:
+            self.x += bttl
+
+        if self.x + bttr + 1 > PLAYFIELD_COLS:
+            self.x -= bttr
         i = 0
         for b in self.blocks:
 
@@ -67,20 +71,15 @@ class Shape:
             rot_y = self.rotations[self.rot_idx][i][1] + self.y
             b.set_pos((rot_x, rot_y))
 
-            # self.width = self.rotations[self.rot_idx][i][0]
-            # self.height = self.rotations[self.rot_idx][i][1]
             i += 1
 
-
     def drop(self):
-
 
         bttb = self.blocks_to_bottom(self.rotations[self.rot_idx])
         while self.y + bttb + 1 < PLAYFIELD_ROWS:#the + 1 accounts for the height of the block
             self.y += 1
             for b in self.blocks:
                 b.move((0, 1))
-
 
     def update(self):
         self.move_down()
@@ -89,7 +88,8 @@ class Shape:
         for b in self.blocks:
             b.draw(surface)
 
-    #loop through lost and if any num < 0 that means that there is a block to the left
+    def landed(self):
+        pass
 
     def blocks_to_left(self, list):
         lowest_x = 0
@@ -99,7 +99,6 @@ class Shape:
                 lowest_x = l[0]
 
         return -lowest_x #needs to be inverted
-
 
     def blocks_to_right(self, list):
         highest_x = 0
