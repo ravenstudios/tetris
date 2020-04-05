@@ -7,11 +7,8 @@ class Shape:
 
         self.x = x
         self.y = y
-        # self.width = 0
-        # self.height = 0
 
-
-        self.drop_rate = 60
+        self.drop_rate = 10
         self.rate_counter = 0
         self.rot_idx = 0
 
@@ -21,18 +18,40 @@ class Shape:
         b2 = block.Block((self.rotations[0][1][0] + self.x, self.rotations[0][1][1] + self.y), BLUE)
         b3 = block.Block((self.rotations[0][2][0] + self.x, self.rotations[0][2][1] + self.y), BLUE)
         b4 = block.Block((self.rotations[0][3][0] + self.x, self.rotations[0][3][1] + self.y), BLUE)
-        # self.width = self.rotations[0][4][0]
-        # self.height = self.rotations[0][4][1]
         self.blocks = [b1, b2, b3, b4]
 
-    def move_down(self):
+    def move_down(self, playfield):
+
+
+
         self.rate_counter += 1
         if self.rate_counter % self.drop_rate == 0:
-            bttb = self.blocks_to_bottom(self.rotations[self.rot_idx])
-            if self.y + bttb + 1 < PLAYFIELD_ROWS:#the + 1 accounts for the height of the block
-                self.y += 1
-                for b in self.blocks:
-                    b.move((0, 1))
+            self.drop(playfield)
+
+
+
+    def drop(self, playfield):
+        """
+        drops all blocks in a shape down by one row
+        """
+        bttb = self.blocks_to_bottom(self.rotations[self.rot_idx])
+
+        #if there is a block below any block in the shape we call landed
+        if self.block_below(playfield):
+            print("y:", self.y)
+            print("landed below")
+            self.landed(playfield)
+
+        #if we hit the bottom we call landed
+        if self.y + bttb + 1 >= PLAYFIELD_ROWS:
+            self.landed(playfield)
+
+        #if we have not hit the bottom or landed we move down
+        if self.y + bttb + 1 < PLAYFIELD_ROWS:#the + 1 accounts for the height of the block
+            self.y += 1
+            for b in self.blocks:
+                b.move((0, 1))
+
 
     def move_left(self):
         bttl = self.blocks_to_left(self.rotations[self.rot_idx])
@@ -73,23 +92,55 @@ class Shape:
 
             i += 1
 
-    def drop(self):
+
+    def fast_drop(self, playfield):
 
         bttb = self.blocks_to_bottom(self.rotations[self.rot_idx])
         while self.y + bttb + 1 < PLAYFIELD_ROWS:#the + 1 accounts for the height of the block
-            self.y += 1
-            for b in self.blocks:
-                b.move((0, 1))
+            self.drop(playfield)
 
-    def update(self):
-        self.move_down()
+    def update(self, playfield):
+
+        self.move_down(playfield)
+
+
+
 
     def draw(self, surface):
         for b in self.blocks:
             b.draw(surface)
 
-    def landed(self):
-        pass
+    def landed(self, playfield):
+
+        self.y = 0
+        self.x = 5
+        for b in self.blocks:
+            pos = b.get_pos()
+            playfield.add_block(b, pos[0], pos[1])
+
+
+        self.rot_idx = 0
+
+        b1 = block.Block((self.rotations[0][0][0] + self.x, self.rotations[0][0][1] + self.y), BLUE)
+        b2 = block.Block((self.rotations[0][1][0] + self.x, self.rotations[0][1][1] + self.y), BLUE)
+        b3 = block.Block((self.rotations[0][2][0] + self.x, self.rotations[0][2][1] + self.y), BLUE)
+        b4 = block.Block((self.rotations[0][3][0] + self.x, self.rotations[0][3][1] + self.y), BLUE)
+        self.blocks = [b1, b2, b3, b4]
+
+
+
+
+
+    def block_below(self, playfield):
+        pfl = playfield.get_list()
+
+        for b in self.blocks:
+            b_pos = b.get_pos()
+            print("b_pos", b_pos)
+            if b_pos[1] + 1 < PLAYFIELD_ROWS:
+                if pfl[b_pos[0]][b_pos[1] + 1] != 0:
+                    return True
+        return False
 
     def blocks_to_left(self, list):
         lowest_x = 0

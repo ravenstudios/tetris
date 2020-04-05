@@ -2,11 +2,17 @@ from constants import *
 import pygame
 
 import shape
+import playfield
+
 clock = pygame.time.Clock()
 surface = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 
 pygame.init()
+
 shape = shape.Shape(5, 0, T_SHAPE)
+playfield = playfield.Playfield()
+
+
 def main():
     running = True
 
@@ -20,15 +26,11 @@ def main():
                 if event.key == pygame.K_RIGHT :
                     shape.move_right()
                 if event.key == pygame.K_DOWN :
-                    shape.drop()
+                    shape.fast_drop(playfield)
                 if event.key == pygame.K_r :
                     shape.rotate()
                 if event.key == pygame.K_q :
                     running = False
-
-
-
-
 
             if event.type == pygame.QUIT:
                 running = False
@@ -37,24 +39,18 @@ def main():
 
     pygame.quit()
 
-def draw_grid():
-
-    for c in range(PLAYFIELD_COLS):
-        for r in range(PLAYFIELD_ROWS):
-            pygame.draw.rect(surface, BLACK, (PLAYFIELD_OFFSET + c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
-            pygame.draw.rect(surface, (150, 150, 150), (PLAYFIELD_OFFSET + c * BLOCK_SIZE + 1, r * BLOCK_SIZE + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2))
 
 def draw():
     surface.fill((200, 200, 200))#background
-    draw_grid()
+    playfield.draw(surface)
     shape.draw(surface)
     pygame.display.flip()
 
 
 
 def update():
-    shape.update()
-
+    shape.update(playfield)
+    playfield.update()
 
 
 if __name__ == "__main__":
