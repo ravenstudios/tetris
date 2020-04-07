@@ -8,7 +8,8 @@ class Shape:
         self.x = x
         self.y = y
 
-        self.drop_rate = 10
+        self.drop_rate = 30
+        self.fast_drop = False
         self.rate_counter = 0
         self.rot_idx = 0
 
@@ -21,11 +22,13 @@ class Shape:
         self.blocks = [b1, b2, b3, b4]
 
     def move_down(self, playfield):
-
-
-
         self.rate_counter += 1
-        if self.rate_counter % self.drop_rate == 0:
+        if self.fast_drop == False:
+            #drop slow
+            if self.rate_counter % self.drop_rate == 0:
+                self.drop(playfield)
+        #drop fast
+        else:
             self.drop(playfield)
 
 
@@ -38,19 +41,21 @@ class Shape:
 
         #if there is a block below any block in the shape we call landed
         if self.block_below(playfield):
-            print("y:", self.y)
-            print("landed below")
             self.landed(playfield)
+            return
 
         #if we hit the bottom we call landed
         if self.y + bttb + 1 >= PLAYFIELD_ROWS:
             self.landed(playfield)
+            return
 
         #if we have not hit the bottom or landed we move down
         if self.y + bttb + 1 < PLAYFIELD_ROWS:#the + 1 accounts for the height of the block
             self.y += 1
             for b in self.blocks:
                 b.move((0, 1))
+
+
 
 
     def move_left(self):
@@ -93,11 +98,7 @@ class Shape:
             i += 1
 
 
-    def fast_drop(self, playfield):
 
-        bttb = self.blocks_to_bottom(self.rotations[self.rot_idx])
-        while self.y + bttb + 1 < PLAYFIELD_ROWS:#the + 1 accounts for the height of the block
-            self.drop(playfield)
 
     def update(self, playfield):
 
@@ -112,6 +113,7 @@ class Shape:
 
     def landed(self, playfield):
 
+        self.fast_drop = False
         self.y = 0
         self.x = 5
         for b in self.blocks:
@@ -136,7 +138,6 @@ class Shape:
 
         for b in self.blocks:
             b_pos = b.get_pos()
-            print("b_pos", b_pos)
             if b_pos[1] + 1 < PLAYFIELD_ROWS:
                 if pfl[b_pos[0]][b_pos[1] + 1] != 0:
                     return True

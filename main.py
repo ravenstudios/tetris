@@ -26,12 +26,15 @@ def main():
                 if event.key == pygame.K_RIGHT :
                     shape.move_right()
                 if event.key == pygame.K_DOWN :
-                    shape.fast_drop(playfield)
+                    shape.fast_drop = True
                 if event.key == pygame.K_r :
                     shape.rotate()
                 if event.key == pygame.K_q :
                     running = False
 
+            if event.type == pygame.KEYUP :
+                if event.key == pygame.K_DOWN :
+                    shape.fast_drop = False
             if event.type == pygame.QUIT:
                 running = False
         draw()
