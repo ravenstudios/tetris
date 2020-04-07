@@ -9,7 +9,7 @@ surface = pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT))
 
 pygame.init()
 
-shape = shape.Shape(5, 0, T_SHAPE)
+shape = shape.Shape(5, 0, O_SHAPE)
 playfield = playfield.Playfield()
 
 
