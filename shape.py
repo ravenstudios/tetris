@@ -1,25 +1,34 @@
 import pygame
 import block
 from constants import *
+import random
 
 class Shape:
-    def __init__(self, x, y, rots):
+    def __init__(self):
 
-        self.x = x
-        self.y = y
-
+        self.x = 5
+        self.y = 0
+        self.shapes = [I, T, L, J, Z, S, O]
         self.drop_rate = 30
         self.fast_drop = False
         self.rate_counter = 0
         self.rot_idx = 0
+        self.current_shape = self.new_shape()
+        self.rotations = self.current_shape["shapes"]
+        self.color = self.current_shape["color"]
 
-        self.rotations = rots
-
-        b1 = block.Block((self.rotations[0][0][0] + self.x, self.rotations[0][0][1] + self.y), BLUE)
-        b2 = block.Block((self.rotations[0][1][0] + self.x, self.rotations[0][1][1] + self.y), BLUE)
-        b3 = block.Block((self.rotations[0][2][0] + self.x, self.rotations[0][2][1] + self.y), BLUE)
-        b4 = block.Block((self.rotations[0][3][0] + self.x, self.rotations[0][3][1] + self.y), BLUE)
+        b1 = block.Block((self.rotations[0][0][0] + self.x, self.rotations[0][0][1] + self.y), self.color)
+        b2 = block.Block((self.rotations[0][1][0] + self.x, self.rotations[0][1][1] + self.y), self.color)
+        b3 = block.Block((self.rotations[0][2][0] + self.x, self.rotations[0][2][1] + self.y), self.color)
+        b4 = block.Block((self.rotations[0][3][0] + self.x, self.rotations[0][3][1] + self.y), self.color)
         self.blocks = [b1, b2, b3, b4]
+
+
+
+    def new_shape(self):
+        rdm = random.randint(0, len(self.shapes) - 1)
+        return self.shapes[rdm]
+
 
     def move_down(self, playfield):
         self.rate_counter += 1
@@ -122,11 +131,14 @@ class Shape:
 
 
         self.rot_idx = 0
+        self.current_shape = self.new_shape()
+        self.rotations = self.current_shape["shapes"]
+        self.color = self.current_shape["color"]
 
-        b1 = block.Block((self.rotations[0][0][0] + self.x, self.rotations[0][0][1] + self.y), BLUE)
-        b2 = block.Block((self.rotations[0][1][0] + self.x, self.rotations[0][1][1] + self.y), BLUE)
-        b3 = block.Block((self.rotations[0][2][0] + self.x, self.rotations[0][2][1] + self.y), BLUE)
-        b4 = block.Block((self.rotations[0][3][0] + self.x, self.rotations[0][3][1] + self.y), BLUE)
+        b1 = block.Block((self.rotations[0][0][0] + self.x, self.rotations[0][0][1] + self.y), self.color)
+        b2 = block.Block((self.rotations[0][1][0] + self.x, self.rotations[0][1][1] + self.y), self.color)
+        b3 = block.Block((self.rotations[0][2][0] + self.x, self.rotations[0][2][1] + self.y), self.color)
+        b4 = block.Block((self.rotations[0][3][0] + self.x, self.rotations[0][3][1] + self.y), self.color)
         self.blocks = [b1, b2, b3, b4]
 
 
