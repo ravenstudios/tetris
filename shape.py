@@ -7,7 +7,7 @@ class Shape:
     def __init__(self):
 
         self.x = 5
-        self.y = 0
+        self.y = 1
         self.shapes = [I, T, L, J, Z, S, O]
         self.drop_rate = 30
         self.fast_drop = False
@@ -123,7 +123,7 @@ class Shape:
     def landed(self, playfield):
 
         self.fast_drop = False
-        self.y = 0
+        self.y = 1
         self.x = 5
         for b in self.blocks:
             pos = b.get_pos()

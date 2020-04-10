@@ -13,32 +13,44 @@ shape = shape.Shape()
 playfield = playfield.Playfield()
 
 
+
 def main():
     running = True
-
+    paused = False
     while running:
         clock.tick(TICK_RATE)
         for event in pygame.event.get():
 
             if event.type == pygame.KEYDOWN :
-                if event.key == pygame.K_LEFT :
-                    shape.move_left()
-                if event.key == pygame.K_RIGHT :
-                    shape.move_right()
-                if event.key == pygame.K_DOWN :
-                    shape.fast_drop = True
-                if event.key == pygame.K_r :
-                    shape.rotate()
-                if event.key == pygame.K_q :
-                    running = False
 
-            if event.type == pygame.KEYUP :
+                if event.key == pygame.K_q :#quit
+                    running = False
+                if event.key == pygame.K_p :#pause
+                    paused = not paused
+
+                if not paused:
+                    if event.key == pygame.K_LEFT:
+                        shape.move_left()
+                    if event.key == pygame.K_RIGHT :
+                        shape.move_right()
+                    if event.key == pygame.K_DOWN :
+                        shape.fast_drop = True
+                    if event.key == pygame.K_r :
+                        shape.rotate()
+
+
+            if event.type == pygame.KEYUP  and not paused:#keyup fast draw
                 if event.key == pygame.K_DOWN :
                     shape.fast_drop = False
-            if event.type == pygame.QUIT:
+
+            if event.type == pygame.QUIT:#event quit
                 running = False
-        draw()
-        update()
+
+        if not paused:
+            draw()
+            update()
+
+
 
     pygame.quit()
 
@@ -52,6 +64,7 @@ def draw():
 
 
 def update():
+
     shape.update(playfield)
     playfield.update()
 
